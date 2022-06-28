@@ -1,0 +1,7 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/stephenc/Desktop/cs/CHEUNG_Kam-Man-Project-Space/Game 2048'
+g++ -pedantic-errors -std=c++11 main.cpp -o t
+./t
+rm -f t
+make: Leaving directory `/Users/stephenc/Desktop/cs/CHEUNG_Kam-Man-Project-Space/Game 2048'
+ 
