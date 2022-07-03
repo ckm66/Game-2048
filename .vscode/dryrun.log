@@ -1,7 +1,7 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/stephenc/Desktop/cs/CHEUNG_Kam-Man-Project-Space/Game 2048'
-g++ -pedantic-errors -std=c++11 main.cpp -o t
-./t
-rm -f t
-make: Leaving directory `/Users/stephenc/Desktop/cs/CHEUNG_Kam-Man-Project-Space/Game 2048'
+make: Entering directory `/Users/stephenc/Desktop/cs/Projects Space/Game 2048'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
+make: Leaving directory `/Users/stephenc/Desktop/cs/Projects Space/Game 2048'
  

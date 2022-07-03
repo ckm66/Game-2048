@@ -4,4 +4,5 @@
 int main()
 {
     sign_up();
+    sign_up();
 }
