@@ -3,5 +3,6 @@
 
 int main()
 {
-    sign_up();
+
+    Clear_Data_Base();
 }
