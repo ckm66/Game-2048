@@ -6,11 +6,13 @@
 #include <algorithm>
 #include <string.h>
 #include <vector>
+#include "Core.h"
 
 struct player_Information
 {
     std::string player_ID;
     std::string password;
+    std::stack <Game_Data> Game_Storage;
 };
 
 std::vector<player_Information> Player_Data_Base;
@@ -38,7 +40,7 @@ void sign_up()
         }
     }
 
-    while (true)
+    while (true)  //Set Up Password
     {
         std::cout << "Password: ";
         std::getline(std::cin, New_User.password);
