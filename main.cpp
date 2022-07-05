@@ -3,6 +3,7 @@
 
 int main()
 {
-
-    Clear_Data_Base();
+    Reading_Player_Data_Base();
+    sign_up();
+    Generate_Player_Data_Base();
 }

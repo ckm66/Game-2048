@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
 #include <sstream>
 #include <algorithm>
 #include <string.h>
@@ -63,7 +64,7 @@ void sign_up()
 
 void Generate_Player_Data_Base()
 {
-    std::fstream Player("Player Data Base.csv", std::fstream::trunc);
+    std::fstream Player("Player Data Base.csv", std::fstream::trunc | std::fstream::out);
 
     Player << "Player ID"
            << ","
@@ -73,22 +74,36 @@ void Generate_Player_Data_Base()
     {
         Player << player->player_ID << "," << player->password << '\n';
     }
+
+    Player.close();
 }
 
 void Reading_Player_Data_Base()
 {
     std::fstream Player("Player Data Base.csv", std::fstream::in);
 
+    if (Player.is_open() == false)
+    {
+        return;
+    }
+
     std::string line;
 
+    bool Description{true};
     while (std::getline(Player, line))
     {
+        if (Description)
+        {
+            Description = false;
+            continue;
+        }
+
         player_Information New_Player;
         std::stringstream line_(line);
 
         std::string column;
         int count{0};
-        
+
         while (std::getline(line_, column, ','))
         {
 
@@ -109,11 +124,11 @@ void Reading_Player_Data_Base()
         }
         Player_Data_Base.push_back(New_Player);
     }
+
+    Player.close();
 }
 
 void Clear_Data_Base()
 {
-    std::fstream player ("Player Data Base.csv", std::fstream::trunc);
-
-    player.close();
+    remove("Player Data Base.csv");
 }
