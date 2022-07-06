@@ -18,8 +18,6 @@ std::stack <Game_Data> Temporate_Game_Storage;
 
 void Initalizing_Game(Game_Data &New_Game)
 {
-    srand(time(NULL));
-
     New_Game.Index = rand() %1000 + 1;
 
     New_Game.Game_Time = time(NULL);
@@ -39,11 +37,8 @@ void Initalizing_Game(Game_Data &New_Game)
 }
 
 void Adding_Block(Game_Data &New_Game)
-{
+{   
     
-    srand(time(NULL));
-
-    std::cout << New_Game.Board_Size;
 
     int x = rand() % New_Game.Board_Size;
     int y = rand() % New_Game.Board_Size;
@@ -54,7 +49,44 @@ void Adding_Block(Game_Data &New_Game)
     }
 
     else
+    {
         Adding_Block(New_Game);
-
+    }
     return;
+}
+
+bool Check_Game_Status(Game_Data New_Game)
+{
+    bool Full {true};
+
+    for (int x = 0; x < New_Game.Board_Size; x++)
+    {
+        for (int y = 0; y < New_Game.Board_Size; y++)
+        {
+            if (New_Game.Game_Board[x][y] == 0)
+            {
+                Full = false;
+                return Full;
+            }
+        }
+    }
+    return Full;
+}
+
+void Print_Board(Game_Data New_Game)
+{
+    for (int y = 0; y < New_Game.Board_Size; y++)
+    {
+        for (int x = 0; x < New_Game.Board_Size; x++)
+        {
+            std::cout << New_Game.Game_Board[x][y];
+        }
+        std::cout << '\n';
+    }
+    return;
+}
+
+void Swipe(Game_Data New_Game)
+{
+
 }
