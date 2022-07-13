@@ -6,6 +6,7 @@
 #include <sstream>
 #include <algorithm>
 #include <string.h>
+#include <string>   
 #include <vector>
 #include <stdlib.h>
 #include "struct.h"
@@ -57,6 +58,31 @@ void sign_up(player_Information &New_User)
     }
 }
 
+void Sign_in(player_Information &Player)
+{
+    std::string player_ID;
+    std::cout << "Please Enter ID";
+    std::cin >> player_ID;
+    std::vector<player_Information>::iterator index = std::find_if(Player_Data_Base.begin(), Player_Data_Base.end(), [=](player_Information Players){return Players.player_ID == player_ID;});
+    if (index == Player_Data_Base.end())
+    {
+        std::cout << "Player Unfound";
+        return;
+    }
+
+    std::string Password;
+    std::cout << "Please Enter Password";
+    std::cin >> Password;
+    if (index->password != Password)
+    {
+        std::cout << "Password Mismatch";
+        return;
+    }
+    std::cout << "Login Successful" << '\n';
+    Player = *index;
+    std::cout << "Hello " <<  Player.player_ID;
+}
+
 void Input_Game_Data(Game_Data &Game, std::string column)
 {
     std::stringstream column_ (column);
@@ -90,7 +116,7 @@ void Read_Player_Game_Base(player_Information &Player)
         std::stringstream line_ (line);
         std::string column;
         int count = 0;
-        while (line_, column, ',')
+        while (std::getline(line_, column, ','))
         {
             switch (count)
             {
@@ -108,18 +134,19 @@ void Read_Player_Game_Base(player_Information &Player)
                     }
 
                     Game.Completed = true;
+                    
                     break;
                 }
 
                 case 2:
                 {
-                    Game.Index = stoi(column);
+                    Game.Index = std::stoi(column);   
                     break;
                 }
 
                 case 3:
                 {
-                    Game.Board_Size = stoi(column); 
+                    Game.Board_Size = std::stoi(column); 
                     break;
                 }
 
@@ -128,6 +155,7 @@ void Read_Player_Game_Base(player_Information &Player)
                     Input_Game_Data(Game, column);
                 }
             }
+            count++;
         }
     }
 
@@ -158,7 +186,6 @@ void Read_Player_Data_Base()
         {
             switch (count)
             {
-
             case 0:
             {
                 New_Player.player_ID = column;
@@ -171,11 +198,14 @@ void Read_Player_Data_Base()
                 break;
             }
             }
+            
+            count++;
         }
         Read_Player_Game_Base(New_Player);
         Player_Data_Base.push_back(New_Player);
     }
     Player.close();
+    
 }
 
 void Generate_Game_Data_Base(std::vector<player_Information>::iterator Player, std::string player_ID)

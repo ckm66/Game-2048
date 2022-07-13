@@ -27,37 +27,38 @@ void Initalizing_Game(Game_Data &New_Game)
     }
 }
 
-void Adding_Block(Game_Data &New_Game)
+void Adding_Block(Game_Data &Game)
 {
 
-    int x = rand() % New_Game.Board_Size;
-    int y = rand() % New_Game.Board_Size;
+    int x = rand() % Game.Board_Size;
+    int y = rand() % Game.Board_Size;
 
-    if (New_Game.Game_Board[x][y] == 0)
+    if (Game.Game_Board[x][y] == 0)
     {
-        New_Game.Game_Board[x][y] = 2;
+        Game.Game_Board[x][y] = 2;
     }
 
     else
     {
-        Adding_Block(New_Game);
+        Adding_Block(Game);
     }
 
-    New_Game.Score += 2;
+    Game.Score += 2;
     return;
 }
 
-bool Check_Game_Status(Game_Data &New_Game)
+bool Check_Game_Status(Game_Data &Game)
 {
     bool Full{true};
 
-    for (int x = 0; x < New_Game.Board_Size; x++)
+    for (int x = 0; x < Game.Board_Size; x++)
     {
-        for (int y = 0; y < New_Game.Board_Size; y++)
+        for (int y = 0; y < Game.Board_Size; y++)
         {
-            if (New_Game.Game_Board[x][y] == 0)
+            if (Game.Game_Board[x][y] == 0)
             {
                 Full = false;
+                Game.Completed = true;
                 return Full;
             }
         }
@@ -75,7 +76,6 @@ void Print_Board(Game_Data New_Game)
         }
         std::cout << '\n';
     }
-    
     return;
 }
 

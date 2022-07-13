@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Wed Jul 13 09:45:58 2022
+# Make data base, printed on Wed Jul 13 16:20:35 2022
 
 # Variables
 
@@ -86,6 +86,7 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 XPC_FLAGS = 0x0
 # default
 MAKE = $(MAKE_COMMAND)
+ 
 # default
 MAKECMDGOALS := all
 # environment
@@ -163,9 +164,9 @@ VSCODE_PID = 553
 
 # Directories
 
-# . (device 16777234, inode 19776585): 15 files, no impossibilities.
+# . (device 16777234, inode 19776585): 13 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -191,7 +192,7 @@ all:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-10 08:37:38
+#  Last modified 2022-07-13 16:18:56
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -202,7 +203,7 @@ Compile:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `makefile', line 2):
-	g++ -pedantic-errors -std=c++20 main.cpp -o main
+	g++ -pedantic-errors -std=c++20 main.cpp -lncurses -o main
 	./main
 	rm -f main
 	
@@ -226,6 +227,6 @@ Compile:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed Jul 13 09:45:58 2022
+# Finished Make data base on Wed Jul 13 16:20:35 2022
 
  
