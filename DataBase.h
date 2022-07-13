@@ -1,25 +1,18 @@
 #pragma once
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <stdio.h>
 #include <sstream>
 #include <algorithm>
 #include <string.h>
 #include <vector>
+#include <stdlib.h>
+#include "struct.h"
 #include "Core.h"
 
-struct player_Information
+void sign_up(player_Information &New_User)
 {
-    std::string player_ID;
-    std::string password;
-    std::stack <Game_Data> Game_Storage;
-};
-
-std::vector<player_Information> Player_Data_Base;
-
-void sign_up()
-{
-    player_Information New_User;
     bool Repeated{false};
 
     while (true) // Set Up Player ID
@@ -64,73 +57,167 @@ void sign_up()
     }
 }
 
-void Generate_Player_Data_Base()
+void Input_Game_Data(Game_Data &Game, std::string column)
 {
-    std::fstream Player("Player Data Base.csv", std::fstream::trunc | std::fstream::out);
-
-    Player << "Player ID"
-           << ","
-           << "Password" << '\n';
-
-    for (std::vector<player_Information>::iterator player = Player_Data_Base.begin(); player != Player_Data_Base.end(); player++)
+    std::stringstream column_ (column);
+    std::string Block;
+    int x {0};
+    int y {0};
+    while (std::getline(column_, Block, ','))
     {
-        Player << player->player_ID << "," << player->password << '\n';
+        Game.Game_Board[x][y] = stoi(Block);
+        x++;
+        if (x > 11)
+        {
+            x = 0;
+            y++;
+        }
     }
-
-    Player.close();
 }
 
-void Reading_Player_Data_Base()
+void Read_Player_Game_Base(player_Information &Player)
 {
-    std::fstream Player("Player Data Base.csv", std::fstream::in);
-
-    if (Player.is_open() == false)
+    std::fstream Game (Player.player_ID + "_Game_Record.csv", std::fstream::in);
+    std::string line;
+    while (std::getline(Game, line))
     {
-        return;
+        if (line == "Player_ID,Completed?,Game Index,Game Time,Board Size,")
+        {
+            continue;
+        }
+
+        Game_Data Game;
+        std::stringstream line_ (line);
+        std::string column;
+        int count = 0;
+        while (line_, column, ',')
+        {
+            switch (count)
+            {
+                case 0: // Player ID
+                {
+                    break;
+                }
+
+                case 1: // Completed
+                {
+                    if (column == "0")
+                    {
+                        Game.Completed = false;
+                        break;
+                    }
+
+                    Game.Completed = true;
+                    break;
+                }
+
+                case 2:
+                {
+                    Game.Index = stoi(column);
+                    break;
+                }
+
+                case 3:
+                {
+                    Game.Board_Size = stoi(column); 
+                    break;
+                }
+
+                default:
+                {
+                    Input_Game_Data(Game, column);
+                }
+            }
+        }
+    }
+
+}
+
+void Read_Player_Data_Base()
+{
+    std::fstream Player ("Player Data Base.csv", std::fstream::in);
+
+    if (!Player.is_open())
+    {
+        std::cerr << "Error when Opening the Player Data Base.";
     }
 
     std::string line;
-
-    bool Description{true};
     while (std::getline(Player, line))
     {
-        if (Description)
+        if (line == "Player ID,Password")
         {
-            Description = false;
             continue;
         }
 
         player_Information New_Player;
-        std::stringstream line_(line);
-
+        std::stringstream line_ (line);
+        int count {0};
         std::string column;
-        int count{0};
-
         while (std::getline(line_, column, ','))
         {
-
             switch (count)
             {
+
             case 0:
+            {
                 New_Player.player_ID = column;
                 break;
+            }
 
             case 1:
+            {
                 New_Player.password = column;
                 break;
-
-            default:
-                break;
             }
-            count++;
+            }
         }
+        Read_Player_Game_Base(New_Player);
         Player_Data_Base.push_back(New_Player);
     }
-
     Player.close();
 }
 
-void Clear_Data_Base()
+void Generate_Game_Data_Base(std::vector<player_Information>::iterator Player, std::string player_ID)
+{
+    std::fstream Game_Record (player_ID + "_Game_Record.csv", std::fstream::out | std::fstream::trunc);
+    Game_Record << "Player_ID" << ','
+                << "Completed?" << ','
+                << "Game Index" << ','
+                //<< "Game Time" << ','
+                << "Board Size" << ','
+                << '\n';
+    for (int Game_Number = 0; Game_Number != Player->Game_Storage.size(); Game_Number++)
+    {
+        Game_Record << Player->player_ID << ',' 
+                    << Player->Game_Storage[Game_Number].Completed << ','
+                    << Player->Game_Storage[Game_Number].Index << ','
+                    //<< Player->Game_Storage[Game_Number].Game_Time << ','
+                    << Player->Game_Storage[Game_Number].Board_Size <<',';
+                    
+        for (int y = 0; y < 10; y++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                Game_Record << Player->Game_Storage[Game_Number].Game_Board[x][y] << ',';
+            }
+        }
+        Game_Record << '\n';
+    }
+}
+
+void Generate_Player_Data_Base()
+{
+    std::fstream Player_Record ("Player Data Base.csv", std::fstream::out | std::fstream::trunc);
+    Player_Record << "Player ID" << ',' << "Password" << '\n';
+    for (std::vector<player_Information>::iterator head = Player_Data_Base.begin(); head != Player_Data_Base.end(); head++)
+    {
+        Player_Record << head->player_ID << ',' << head->password << '\n';
+        Generate_Game_Data_Base(head, head->player_ID);
+    }
+}
+
+void Reset()
 {
     remove("Player Data Base.csv");
 }
