@@ -60,6 +60,7 @@ void Information_Page()
     attron(A_BOLD);
     mvaddstr(16, 1, "Designed and Produced by");
     mvaddstr(17, 1, "Cheung Kam Man, Stephen");
+
     attroff(A_BOLD);
 
     attron(A_BOLD);
@@ -67,14 +68,11 @@ void Information_Page()
     mvaddstr(y - 2, (x - 25) / 2, "Click Any Key To Continue");
     attroff(A_BOLD);
     attroff(A_REVERSE);
-
-
-
+    
     getch();
 
     refresh();
-
+    
     endwin();
-
     return;
 }  
