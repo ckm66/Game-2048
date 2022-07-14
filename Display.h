@@ -43,12 +43,24 @@ void Information_Page()
     attron(A_BOLD);
     mvaddstr(10, 1, "Features: ");
     mvaddstr(11, 1, "-");
+    mvaddstr(12, 1, "-");
+    mvaddstr(13, 1, "-");
+    mvaddstr(14, 1, "-");
     attroff(A_BOLD);
 
     mvaddstr(11, 2, " Written in C++ & NCurses");
+    mvaddstr(12, 2, " Save & Load Game");
+    mvaddstr(13, 2, " Use of Arrow Key for Game Operation");
+    mvaddstr(14, 2, " Score Board");
 
 
-    
+    mvhline(15, 1, '*', x - 2);
+
+
+    attron(A_BOLD);
+    mvaddstr(16, 1, "Designed and Produced by");
+    mvaddstr(17, 1, "Cheung Kam Man, Stephen");
+    attroff(A_BOLD);
 
     attron(A_BOLD);
     attron(A_REVERSE);
