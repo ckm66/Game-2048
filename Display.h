@@ -1,5 +1,6 @@
 #pragma once
 #include <ncurses.h>
+#include <utility>
 #define KEY_RETURN 10
 
 void Information_Page()
@@ -73,7 +74,7 @@ void Information_Page()
     return;
 }
 
-std::string Registeration_Page(int ymax, int xmax)
+std::pair<std::string, std::string> Registeration_Page(int ymax, int xmax, bool Repeated)
 {
     WINDOW *Registeration_Page = newwin(ymax, xmax, 0, 0);
     box(Registeration_Page, 0, 0);
@@ -94,6 +95,8 @@ std::string Registeration_Page(int ymax, int xmax)
     mvwaddch(Registeration_Page, 2 * ymax / 10 + 1, xmax / 10 + 51, ACS_URCORNER);
     mvwaddch(Registeration_Page, 2 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
     mvwaddch(Registeration_Page, 2 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
+    if (Repeated == true)
+    { mvwaddstr(Registeration_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( User Name has been used )");}
 
     mvwhline(Registeration_Page, 5 * ymax / 10 + 1, xmax / 10, 0, 52);
     mvwhline(Registeration_Page, 5 * ymax / 10 + 3, xmax / 10, 0, 52);
@@ -104,7 +107,7 @@ std::string Registeration_Page(int ymax, int xmax)
     mvwaddch(Registeration_Page, 5 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
     mvwaddch(Registeration_Page, 5 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
 
-    wmove(Registeration_Page,2 * ymax / 10 + 2, xmax / 10 + 1);
+    wmove(Registeration_Page, 2 * ymax / 10 + 2, xmax / 10 + 1);
     char Player_ID[51];
     wgetnstr(Registeration_Page, Player_ID, 50);
 
@@ -114,21 +117,81 @@ std::string Registeration_Page(int ymax, int xmax)
         Player_Id += it;
     }
 
-    return Player_Id;
+    wmove(Registeration_Page, 5 * ymax / 10 + 2, xmax / 10);
+    char PassWord[50];
+    wgetnstr(Registeration_Page, PassWord, 49);
+
+    std::string Password;
+    for (auto it : PassWord)
+    {
+        Password += it;
+    }
+
+    std::pair<std::string, std::string> User_ID_with_Password;
+    User_ID_with_Password = std::make_pair(Player_Id, Password);
+    return User_ID_with_Password;
 }
 
-void Login_Page(int ymax, int xmax)
+std::pair <std::string, std::string> Login_Page(int ymax, int xmax, bool unfound)
 {
     WINDOW *Login_Page = newwin(ymax, xmax, 0, 0);
     box(Login_Page, 0, 0);
+    echo();
+    keypad(Login_Page, true);
 
+    wattron(Login_Page, A_BOLD);
+    wattron(Login_Page, A_UNDERLINE);
+    mvwaddstr(Login_Page, 2 * ymax / 10, xmax / 10, "Player ID");
+    mvwaddstr(Login_Page, 5 * ymax / 10, xmax / 10, "Password");
+    wattroff(Login_Page, A_BOLD);
+    wattroff(Login_Page, A_UNDERLINE);
 
+    mvwhline(Login_Page, 2 * ymax / 10 + 1, xmax / 10, 0, 52);
+    mvwhline(Login_Page, 2 * ymax / 10 + 3, xmax / 10, 0, 52);
+    mvwvline(Login_Page, 2 * ymax / 10 + 2, xmax / 10 - 1, ACS_VLINE, 1);
+    mvwvline(Login_Page, 2 * ymax / 10 + 2, xmax / 10 + 51, ACS_VLINE, 1);
+    mvwaddch(Login_Page, 2 * ymax / 10 + 1, xmax / 10 - 1, ACS_ULCORNER);
+    mvwaddch(Login_Page, 2 * ymax / 10 + 1, xmax / 10 + 51, ACS_URCORNER);
+    mvwaddch(Login_Page, 2 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
+    mvwaddch(Login_Page, 2 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
+    if (unfound == true)
+    { mvwaddstr(Login_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( Player Unfound or Password is Wrong )");}
 
-    wgetch(Login_Page);
+    mvwhline(Login_Page, 5 * ymax / 10 + 1, xmax / 10, 0, 52);
+    mvwhline(Login_Page, 5 * ymax / 10 + 3, xmax / 10, 0, 52);
+    mvwvline(Login_Page, 5 * ymax / 10 + 2, xmax / 10 - 1, ACS_VLINE, 1);
+    mvwvline(Login_Page, 5 * ymax / 10 + 2, xmax / 10 + 51, ACS_VLINE, 1);
+    mvwaddch(Login_Page, 5 * ymax / 10 + 1, xmax / 10 - 1, ACS_ULCORNER);
+    mvwaddch(Login_Page, 5 * ymax / 10 + 1, xmax / 10 + 51, ACS_URCORNER);
+    mvwaddch(Login_Page, 5 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
+    mvwaddch(Login_Page, 5 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
 
+    wmove(Login_Page, 2 * ymax / 10 + 2, xmax / 10 + 1);
+    char Player_ID[51];
+    wgetnstr(Login_Page, Player_ID, 50);
+
+    std::string Player_Id;
+    for (auto it : Player_ID)
+    {
+        Player_Id += it;
+    }
+
+    wmove(Login_Page, 5 * ymax / 10 + 2, xmax / 10);
+    char PassWord[50];
+    wgetnstr(Login_Page, PassWord, 49);
+
+    std::string Password;
+    for (auto it : PassWord)
+    {
+        Password += it;
+    }
+
+    std::pair<std::string, std::string> User_ID_with_Password;
+    User_ID_with_Password = std::make_pair(Player_Id, Password);
+    return User_ID_with_Password;
 }
 
-void Initalization_Window(int ymax, int xmax)
+char Initalization_Window(int ymax, int xmax)
 {
     WINDOW *Initalization_Page = newwin(ymax, xmax, 0, 0);
     cbreak();
@@ -139,13 +202,13 @@ void Initalization_Window(int ymax, int xmax)
     wattron(Initalization_Page, A_BOLD);
     wattron(Initalization_Page, A_UNDERLINE);
     mvwaddstr(Initalization_Page, ymax / 4, (xmax - 23) / 2, "Please Make Your Choice");
-    wattroff(Initalization_Page, A_BOLD);   
+    wattroff(Initalization_Page, A_BOLD);
     mvwaddstr(Initalization_Page, 2 * ymax / 4 - 2, (xmax / 2 - 30) / 2, "If You Already Have An Account");
     mvwaddstr(Initalization_Page, 2 * ymax / 4 - 2, xmax - (xmax / 2 + 23) / 2, "If You are A New Player");
     wattroff(Initalization_Page, A_UNDERLINE);
 
     int Input{0};
-    int Option {0};
+    int Option{0};
     while (Input != KEY_RETURN && Input != KEY_ENTER)
     {
         wrefresh(Initalization_Page);
@@ -198,12 +261,8 @@ void Initalization_Window(int ymax, int xmax)
 
     if (Option == 1)
     {
-        Login_Page(ymax, xmax);
+        return 'L';
     }
 
-    else
-    {
-        Registeration_Page(ymax, xmax);
-    }
+    return 'R';
 }
-
