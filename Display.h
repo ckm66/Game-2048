@@ -96,7 +96,9 @@ std::pair<std::string, std::string> Registeration_Page(int ymax, int xmax, bool 
     mvwaddch(Registeration_Page, 2 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
     mvwaddch(Registeration_Page, 2 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
     if (Repeated == true)
-    { mvwaddstr(Registeration_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( User Name has been used )");}
+    {
+        mvwaddstr(Registeration_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( User Name has been used )");
+    }
 
     mvwhline(Registeration_Page, 5 * ymax / 10 + 1, xmax / 10, 0, 52);
     mvwhline(Registeration_Page, 5 * ymax / 10 + 3, xmax / 10, 0, 52);
@@ -110,29 +112,19 @@ std::pair<std::string, std::string> Registeration_Page(int ymax, int xmax, bool 
     wmove(Registeration_Page, 2 * ymax / 10 + 2, xmax / 10 + 1);
     char Player_ID[51];
     wgetnstr(Registeration_Page, Player_ID, 50);
-
-    std::string Player_Id;
-    for (auto it : Player_ID)
-    {
-        Player_Id += it;
-    }
+    std::string Player_Id(Player_ID);
 
     wmove(Registeration_Page, 5 * ymax / 10 + 2, xmax / 10);
-    char PassWord[50];
-    wgetnstr(Registeration_Page, PassWord, 49);
-
-    std::string Password;
-    for (auto it : PassWord)
-    {
-        Password += it;
-    }
+    char PassWord[51];
+    wgetnstr(Registeration_Page, PassWord, 50);
+    std::string Password(PassWord);
 
     std::pair<std::string, std::string> User_ID_with_Password;
     User_ID_with_Password = std::make_pair(Player_Id, Password);
     return User_ID_with_Password;
 }
 
-std::pair <std::string, std::string> Login_Page(int ymax, int xmax, bool unfound)
+std::pair<std::string, std::string> Login_Page(int ymax, int xmax, bool unfound)
 {
     WINDOW *Login_Page = newwin(ymax, xmax, 0, 0);
     box(Login_Page, 0, 0);
@@ -155,7 +147,9 @@ std::pair <std::string, std::string> Login_Page(int ymax, int xmax, bool unfound
     mvwaddch(Login_Page, 2 * ymax / 10 + 3, xmax / 10 - 1, ACS_LLCORNER);
     mvwaddch(Login_Page, 2 * ymax / 10 + 3, xmax / 10 + 51, ACS_LRCORNER);
     if (unfound == true)
-    { mvwaddstr(Login_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( Player Unfound or Password is Wrong )");}
+    {
+        mvwaddstr(Login_Page, 2 * ymax / 10 + 4, xmax / 10 + 1, "( Player Unfound or Password is Wrong )");
+    }
 
     mvwhline(Login_Page, 5 * ymax / 10 + 1, xmax / 10, 0, 52);
     mvwhline(Login_Page, 5 * ymax / 10 + 3, xmax / 10, 0, 52);
@@ -177,8 +171,8 @@ std::pair <std::string, std::string> Login_Page(int ymax, int xmax, bool unfound
     }
 
     wmove(Login_Page, 5 * ymax / 10 + 2, xmax / 10);
-    char PassWord[50];
-    wgetnstr(Login_Page, PassWord, 49);
+    char PassWord[51];
+    wgetnstr(Login_Page, PassWord, 50);
 
     std::string Password;
     for (auto it : PassWord)
@@ -265,4 +259,91 @@ char Initalization_Window(int ymax, int xmax)
     }
 
     return 'R';
+}
+
+void game_Menu(int ymax, int xmax, bool previous_Game)
+{
+    WINDOW *Menu = newwin(ymax, xmax, 0, 0);
+    box(Menu, 0, 0);
+    keypad(Menu, true);
+
+    struct menu_Option
+    {
+        int y_Position;
+        int x_Position;
+        std::string Option;
+    } Options[4];
+
+    Options[0].y_Position = 5 * ymax / 10;
+    Options[0].x_Position = (xmax - 9) / 2;
+    Options[0].Option = "Load Game";
+
+    Options[1].y_Position = 6 * ymax / 10;
+    Options[1].x_Position = (xmax - 8) / 2;
+    Options[1].Option = "New Game";
+
+    Options[2].y_Position = 7 * ymax / 10;
+    Options[2].x_Position = (xmax - 4) / 2;
+    Options[2].Option = "Rank";
+
+    Options[3].y_Position = 8 * ymax / 10;
+    Options[3].x_Position = (xmax - 4) / 2;
+    Options[3].Option = "Exit";
+
+    wattron(Menu, A_UNDERLINE);
+    wattron(Menu, A_BOLD);
+    mvwaddstr(Menu, ymax / 10, (xmax - 15) / 2, "Welcome To 2048");
+    wattroff(Menu, A_BOLD);
+
+    int Highlight = 1;
+    if (previous_Game == true)
+    { Highlight = 0; }
+
+    while (true)
+    {
+        for (int n = 0; n < 4; n++)
+        {
+            if (previous_Game == false && n == 0)
+            { continue; }
+
+            if (n == Highlight)
+            { 
+                wattron(Menu, A_REVERSE); 
+                wattron(Menu, A_BOLD);
+            }
+
+            mvwaddstr(Menu, Options[n].y_Position, Options[n].x_Position, Options[n].Option.c_str());
+            wattroff(Menu, A_REVERSE);
+            wattroff(Menu, A_BOLD);
+        }
+
+        int Direction = wgetch(Menu);
+        switch (Direction)
+        {
+            case KEY_UP:
+                Highlight--;
+                break;
+
+            case KEY_DOWN:
+                Highlight++;
+                break;
+
+            case KEY_RETURN:
+                return;
+            
+            default:
+                continue;
+                break;
+
+        }
+        
+        if (Highlight > 3)
+        {
+            Highlight = 3;
+            break;
+        }
+    }
+
+    refresh();
+    wgetch(Menu);
 }

@@ -23,6 +23,7 @@ void sign_Up(int ymax, int xmax, player_Information &New_User)
         std::pair <std::string, std::string> id_And_Password;
         id_And_Password = Registeration_Page(ymax, xmax, Repeated);
         New_User.player_ID = id_And_Password.first;
+        New_User.password = id_And_Password.second;
 
         if (std::find_if(Player_Data_Base.begin(), Player_Data_Base.end(), [=](player_Information player) { return New_User.player_ID == player.player_ID; }) == Player_Data_Base.end())
         {
@@ -72,7 +73,7 @@ void Input_Game_Data(Game_Data &Game, std::string column)
     }
 }
 
-void Read_Player_Game_Base(player_Information &Player)
+void read_Player_Game_Base(player_Information &Player)
 {
     std::fstream Game(Player.player_ID + "_Game_Record.csv", std::fstream::in);
     std::string line;
@@ -131,7 +132,7 @@ void Read_Player_Game_Base(player_Information &Player)
     }
 }
 
-void read_Player_Data_Base()
+void read_Data_Base()
 {
     std::fstream Player("Player Data Base.csv", std::fstream::in);
 
@@ -164,7 +165,7 @@ void read_Player_Data_Base()
             }
             count++;
         }
-        Read_Player_Game_Base(New_Player);
+        read_Player_Game_Base(New_Player);
         Player_Data_Base.push_back(New_Player);
     }
     Player.close();
@@ -198,7 +199,7 @@ void Generate_Game_Data_Base(std::vector<player_Information>::iterator Player, s
     }
 }
 
-void Generate_Player_Data_Base()
+void Generate_Data_Base()
 {
     std::fstream Player_Record("Player Data Base.csv", std::fstream::out | std::fstream::trunc);
     Player_Record << "Player ID" << ',' << "Password" << '\n';
