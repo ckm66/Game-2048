@@ -7,3 +7,4 @@ test:
 	g++ -pedantic-errors -std=c++20 Test.cpp -o t -lncurses
 	./t
 	rm -f t 
+	rm -f *.csv

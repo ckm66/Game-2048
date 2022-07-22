@@ -14,10 +14,6 @@ void Initalizing_Game(Game_Data &New_Game)
 
     New_Game.Game_Time = time(NULL);
 
-    std::cout << "Please enter your desire Game Board Size (4-9)";
-
-    std::cin >> New_Game.Board_Size;
-
     for (int x = 0; x < New_Game.Board_Size; x++)
     {
         for (int y = 0; y < New_Game.Board_Size; y++)
@@ -302,6 +298,15 @@ void Swipe(Game_Data &New_Game, char Direction_of_Swipe)
     }
     }
 }
+
+void New_Game_Session(Game_Data &New_Game, int ymax, int xmax)
+{
+    New_Game.Board_Size = game_Size(ymax, xmax);
+
+    Initalizing_Game(New_Game);
+    Adding_Block(New_Game);
+}
+
 
 void Save_Current_Game(player_Information Current_Player, Game_Data &Current_Game)
 {   

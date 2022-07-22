@@ -24,6 +24,31 @@ int main()
         sign_Up(ymax, xmax, User);
         break;
     }
+    
+    int option {0};
+    while (option != 3)
+    {   
+        option = game_Menu(ymax, xmax, User.Game_Storage.empty());
+
+        switch(option)
+        {
+            case 0:
+            {
+                Game_Data Game;
+                break;
+            }
+            case 1:
+            {
+                Game_Data New_Game;
+                New_Game_Session(New_Game, ymax, xmax);
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+        }
+    }
 
     endwin();
     Generate_Data_Base();

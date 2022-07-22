@@ -79,11 +79,13 @@ void read_Player_Game_Base(player_Information &Player)
     std::string line;
     while (std::getline(Game, line))
     {
-        if (line == "Player_ID,Completed?,Game Index,Game Time,Board Size,")
+        if (line == "Player_ID,Completed?,Game Index,Board Size,")
         {
             continue;
         }
 
+        std::cerr << line;
+        
         Game_Data Game;
         std::stringstream line_(line);
         std::string column;
@@ -178,8 +180,9 @@ void Generate_Game_Data_Base(std::vector<player_Information>::iterator Player, s
                 << "Completed?" << ','
                 << "Game Index" << ','
                 //<< "Game Time" << ','
-                << "Board Size" << ','
-                << '\n';
+                << "Board Size" << ',';
+                 Game_Record << '\n';
+
     for (int Game_Number = 0; Game_Number != Player->Game_Storage.size(); Game_Number++)
     {
         Game_Record << Player->player_ID << ','

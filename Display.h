@@ -261,7 +261,7 @@ char Initalization_Window(int ymax, int xmax)
     return 'R';
 }
 
-void game_Menu(int ymax, int xmax, bool previous_Game)
+int game_Menu(int ymax, int xmax, bool previous_Game)
 {
     WINDOW *Menu = newwin(ymax, xmax, 0, 0);
     box(Menu, 0, 0);
@@ -297,18 +297,22 @@ void game_Menu(int ymax, int xmax, bool previous_Game)
 
     int Highlight = 1;
     if (previous_Game == true)
-    { Highlight = 0; }
+    {
+        Highlight = 0;
+    }
 
     while (true)
     {
         for (int n = 0; n < 4; n++)
         {
             if (previous_Game == false && n == 0)
-            { continue; }
+            {
+                continue;
+            }
 
             if (n == Highlight)
-            { 
-                wattron(Menu, A_REVERSE); 
+            {
+                wattron(Menu, A_REVERSE);
                 wattron(Menu, A_BOLD);
             }
 
@@ -320,30 +324,107 @@ void game_Menu(int ymax, int xmax, bool previous_Game)
         int Direction = wgetch(Menu);
         switch (Direction)
         {
-            case KEY_UP:
-                Highlight--;
-                break;
+        case KEY_UP:
+            Highlight--;
+            break;
 
-            case KEY_DOWN:
-                Highlight++;
-                break;
+        case KEY_DOWN:
+            Highlight++;
+            break;
 
-            case KEY_RETURN:
-                return;
-            
-            default:
-                continue;
-                break;
+        case KEY_RETURN:
+            delwin(Menu);
+            return Highlight;
 
+        default:
+            continue;
         }
-        
+
         if (Highlight > 3)
         {
             Highlight = 3;
+        }
+
+        else if (Highlight < 0 && previous_Game == true)
+        {
+            Highlight = 0;
+        }
+
+        else if (Highlight < 1 && previous_Game == false)
+        {
+            Highlight = 1;
+        }
+    }
+}
+
+int game_Size(int ymax, int xmax)
+{
+    WINDOW *Game_Size_Window = newwin(ymax, xmax, 0, 0);
+    box(Game_Size_Window, 0, 0);
+    keypad(Game_Size_Window, true);
+
+    wattron(Game_Size_Window, A_BOLD);
+    mvwaddstr(Game_Size_Window, ymax / 2, (xmax - 44) / 2, "Please Choose Your Desire Game Board Size: ");
+    wattroff(Game_Size_Window, A_BOLD);
+    int option{0};
+    int board_size{2};
+    while (option != KEY_RETURN)
+    {
+        wattron(Game_Size_Window, A_REVERSE);
+        wattron(Game_Size_Window, A_BOLD);
+        mvwprintw(Game_Size_Window, ymax / 2, (xmax - 44) / 2 + 44, "%02d", board_size);
+        wattroff(Game_Size_Window, A_REVERSE);
+        wattron(Game_Size_Window, A_BOLD);
+
+        option = wgetch(Game_Size_Window);
+        switch (option)
+        {
+        case KEY_UP:
+            board_size++;
+            break;
+        case KEY_DOWN:
+            board_size--;
+            break;
+        case KEY_RETURN:
+            delwin(Game_Size_Window);
+            return board_size;
+        default:
+            continue;
+        }
+
+        if (board_size < 2)
+        {
+            board_size = 2;
+        }
+
+        else if (board_size > 5)
+        {
+            board_size = 5;
+        }
+    }
+    return 0;
+}
+
+char Game_Board(int ymax, int xmax)
+{
+    WINDOW *Game_Board = newwin(ymax, xmax, 0, 0);
+    box(Game_Board, 0, 0);
+    wrefresh(Game_Board);
+
+    mvwaddch(Game_Board, 0, 8 * xmax / 10, ACS_TTEE);
+    mvwvline(Game_Board, 1, 8 * xmax / 10, ACS_VLINE, ymax - 2);
+    mvwaddch(Game_Board, ymax - 1, 8 * xmax / 10, ACS_BTEE);
+
+    mvwhline(Game_Board, 3 * ymax / 10, 8 * xmax / 10 + 1, 0, 2 * xmax / 10 - 1);
+
+    char swipe;
+    while (true)
+    {
+        swipe = wgetch(Game_Board);
+        if (swipe == 'w' || swipe == 'a' || swipe == 's' || swipe == 'd')
+        {
             break;
         }
     }
-
-    refresh();
-    wgetch(Menu);
+    return swipe;
 }
