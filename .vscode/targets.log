@@ -6,8 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Fri Jul 22 11:52:32 2022
+
+# Make data base, printed on Tue Jul 26 20:26:49 2022
 
 # Variables
 
@@ -15,6 +18,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+LC_CTYPE = UTF-8
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -36,23 +43,21 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_CWD = /
+VSCODE_CWD = /Users/stephenc/Desktop/cs/Projects Space/Game 2048
 # environment
 PATH = /Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-LaunchInstanceID = 315EC412-B5B8-4373-8181-902C7FAC4AD7
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.tXK46kms7l/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.8Gz0IpSgzA/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = /private/tmp/com.apple.launchd.OMmMJIYX1Z/org.xquartz:0
+DISPLAY = /private/tmp/com.apple.launchd.ZuizkqdLF2/org.xquartz:0
 # environment
 PWD = /Users/stephenc/Desktop/cs/Projects Space/Game 2048
 # environment
@@ -67,6 +72,8 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 HOME = /Users/stephenc
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CLI = 1
 # environment
 VSCODE_CODE_CACHE_PATH = /Users/stephenc/Library/Application Support/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
@@ -86,7 +93,7 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 1
+SHLVL = 3
 # default
 MAKE_VERSION := 3.81
 # environment
@@ -94,11 +101,15 @@ USER = stephenc
 # makefile
 .DEFAULT_GOAL := Compile
 # environment
+TERM_SESSION_ID = C429DD5D-9EB7-440E-9B7F-17F9C49A81D1
+# environment
 LESS = -R
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# environment
+TERM_PROGRAM = Apple_Terminal
 # default
 .VARIABLES := 
 # environment
@@ -116,7 +127,9 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.21691417.21691423
+TERM_PROGRAM_VERSION = 445
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.21691417.21691423.F36A42E9-5EFA-4931-A574-F46003F6575F
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -137,8 +150,6 @@ MAKEFILES :=
 PAGER = less
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 186b2
 # automatic
 ^F = $(notdir $^)
 # default
@@ -150,9 +161,11 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 574
+TERM = xterm-256color
+# environment
+VSCODE_PID = 2253
 # variable set hash-table stats:
-# Load=70/1024=7%, Rehash=0, Collisions=1/94=1%
+# Load=75/1024=7%, Rehash=0, Collisions=1/99=1%
 
 # Pattern-specific Variable Values
 
@@ -160,9 +173,9 @@ VSCODE_PID = 574
 
 # Directories
 
-# . (device 16777229, inode 19776585): 12 files, no impossibilities.
+# . (device 16777230, inode 19776585): 13 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -189,8 +202,8 @@ test:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `makefile', line 7):
-	g++ -pedantic-errors -std=c++20 Test.cpp -o t -lncurses
+#  commands to execute (from `makefile', line 8):
+	g++ -pedantic-errors -std=c++20 test.cpp -o t -lncurses
 	./t
 	rm -f t 
 	rm -f *.csv
@@ -199,7 +212,7 @@ test:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-21 13:16:05
+#  Last modified 2022-07-26 20:26:14
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -234,8 +247,6 @@ Compile:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Jul 22 11:52:32 2022
+# Finished Make data base on Tue Jul 26 20:26:49 2022
 
  
-make: *** No rule to make target `all'.  Stop.
-

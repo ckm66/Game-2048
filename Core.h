@@ -62,19 +62,6 @@ bool Check_Game_Status(Game_Data &Game)
     return Full;
 }
 
-void Print_Board(Game_Data New_Game)
-{
-    for (int y = 0; y < New_Game.Board_Size; y++)
-    {
-        for (int x = 0; x < New_Game.Board_Size; x++)
-        {
-            std::cout << New_Game.Game_Board[x][y];
-        }
-        std::cout << '\n';
-    }
-    return;
-}
-
 void Swipe(Game_Data &New_Game, char Direction_of_Swipe)
 {
     switch (Direction_of_Swipe)
@@ -307,8 +294,7 @@ void New_Game_Session(Game_Data &New_Game, int ymax, int xmax)
     Adding_Block(New_Game);
 }
 
-
-void Save_Current_Game(player_Information Current_Player, Game_Data &Current_Game)
+void Save_Current_Game(player_Information &Current_Player, Game_Data &Current_Game)
 {   
     std::vector<player_Information>::iterator head = std::find_if(Player_Data_Base.begin(), Player_Data_Base.end(), [=](player_Information Players){return Players.player_ID == Current_Player.player_ID;});
 
@@ -319,4 +305,15 @@ void Save_Current_Game(player_Information Current_Player, Game_Data &Current_Gam
         head->Game_Storage.erase(tail);
     }
     head->Game_Storage.push_back(Current_Game);
+}
+
+void Game(player_Information &player, Game_Data &New_Game, int ymax, int xmax)
+{
+    while (Check_Game_Status(New_Game))
+    {
+        char direction = Game_Board(New_Game, ymax, xmax);
+        Swipe(New_Game, direction);
+        Adding_Block(New_Game);
+    }
+    Save_Current_Game(player, New_Game);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <ncurses.h>
 #include <utility>
+#include "struct.h"
 #define KEY_RETURN 10
 
 void Information_Page()
@@ -405,17 +406,50 @@ int game_Size(int ymax, int xmax)
     return 0;
 }
 
-char Game_Board(int ymax, int xmax)
+char Game_Board(Game_Data Game, int ymax, int xmax)
 {
     WINDOW *Game_Board = newwin(ymax, xmax, 0, 0);
     box(Game_Board, 0, 0);
     wrefresh(Game_Board);
 
-    mvwaddch(Game_Board, 0, 8 * xmax / 10, ACS_TTEE);
-    mvwvline(Game_Board, 1, 8 * xmax / 10, ACS_VLINE, ymax - 2);
-    mvwaddch(Game_Board, ymax - 1, 8 * xmax / 10, ACS_BTEE);
+    mvwaddch(Game_Board, 0, 7 * xmax / 10, ACS_TTEE);
+    mvwvline(Game_Board, 1, 7 * xmax / 10, ACS_VLINE, ymax - 2);
+    mvwaddch(Game_Board, ymax - 1, 7 * xmax / 10, ACS_BTEE);
 
-    mvwhline(Game_Board, 3 * ymax / 10, 8 * xmax / 10 + 1, 0, 2 * xmax / 10 - 1);
+    mvwhline(Game_Board, 3 * ymax / 10, 7 * xmax / 10 + 1, 0, 3 * xmax / 10 - 1);
+
+    mvwaddstr(Game_Board, 1, 7 * xmax / 10 + 1, "User ID: ");
+    mvwaddstr(Game_Board, 2, 7 * xmax / 10 + 1, "Game Score: ");
+
+    wattron(Game_Board, A_BOLD);
+    mvwaddstr(Game_Board, 3 * ymax / 10 + 1, 7 * xmax / 10 + 1, "Game Play Control");
+    wattroff(Game_Board, A_BOLD);
+    mvwaddstr(Game_Board, 3 * ymax / 10 + 2, 7 * xmax / 10 + 1, "Swipe Up: UPPER_KEY");
+    mvwaddstr(Game_Board, 3 * ymax / 10 + 3, 7 * xmax / 10 + 1, "Swipe Left: LEFT_KEY");
+    mvwaddstr(Game_Board, 3 * ymax / 10 + 4, 7 * xmax / 10 + 1, "Swipe Right: RIGHT_KEY");
+    mvwaddstr(Game_Board, 3 * ymax / 10 + 5, 7 * xmax / 10 + 1, "Swipe Down: DOWN_KEY");
+
+    switch (Game.Board_Size)
+    {
+    case 2:
+    {
+        
+        break;
+    }
+
+    case 3:
+    {
+        break;
+    }
+
+    case 4:
+    {
+        break;
+    }
+
+    default:
+        break;
+    }
 
     char swipe;
     while (true)
