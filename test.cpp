@@ -8,7 +8,7 @@ int main()
 {   
     initscr();
     Game_Data Game;
-    Game.Board_Size = 3;
+    Game.Board_Size = 2;
     for (int y = 0; y < Game.Board_Size; y++)
     {
         for (int x  = 0; x < Game.Board_Size; x++)

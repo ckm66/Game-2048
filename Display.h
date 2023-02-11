@@ -1,6 +1,7 @@
 #pragma once
 #include <ncurses.h>
 #include <utility>
+#include <cmath>
 #include "struct.h"
 #define KEY_RETURN 10
 
@@ -406,6 +407,32 @@ int game_Size(int ymax, int xmax)
     return 0;
 }
 
+void print_block(WINDOW *Game_Board, int max_digit, int y, int x)
+{   
+    int y_pos = y + 1;
+    int x_pos = x + 3;
+    wattron(Game_Board, A_REVERSE);
+    switch (max_digit)
+    {
+    case 1:
+    {
+        for (int index = 0; index < 3; ++index)
+        {
+            mvwaddstr(Game_Board, y, x, "       ");
+            y++;
+        }
+        mvwaddch(Game_Board, y_pos, x_pos, '1');
+
+        break;
+    }
+    case 2:
+        break;
+    
+    default:
+        break;
+    }
+}
+
 char Game_Board(Game_Data Game, int ymax, int xmax)
 {
     WINDOW *Game_Board = newwin(ymax, xmax, 0, 0);
@@ -433,7 +460,7 @@ char Game_Board(Game_Data Game, int ymax, int xmax)
     {
     case 2:
     {
-        
+        print_block(Game_Board, 1, 1, 1);
         break;
     }
 
@@ -455,7 +482,7 @@ char Game_Board(Game_Data Game, int ymax, int xmax)
     while (true)
     {
         swipe = wgetch(Game_Board);
-        if (swipe == 'w' || swipe == 'a' || swipe == 's' || swipe == 'd')
+        if (swipe == 'w' || swipe == 'a' || swipe == 's' || swipe == 'd' || swipe == 'q')
         {
             break;
         }

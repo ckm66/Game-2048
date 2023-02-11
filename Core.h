@@ -8,7 +8,7 @@
 #include "struct.h"
 #include "DataBase.h"
 
-void Initalizing_Game(Game_Data &New_Game)
+void Initalizing_Game(Game_Data &New_Game) // Initalize a game with ID & game board
 {
     New_Game.Index = rand() % 1000 + 1;
 
@@ -23,7 +23,7 @@ void Initalizing_Game(Game_Data &New_Game)
     }
 }
 
-void Adding_Block(Game_Data &Game)
+void Adding_Block(Game_Data &Game)  // Adding a block to the game
 {
 
     int x = rand() % Game.Board_Size;
@@ -43,7 +43,7 @@ void Adding_Block(Game_Data &Game)
     return;
 }
 
-bool Check_Game_Status(Game_Data &Game)
+bool Check_Game_Status(Game_Data &Game) // Checking whether the game is over or not 
 {
     bool Full{true};
 
@@ -62,7 +62,7 @@ bool Check_Game_Status(Game_Data &Game)
     return Full;
 }
 
-void Swipe(Game_Data &New_Game, char Direction_of_Swipe)
+void Swipe(Game_Data &New_Game, char Direction_of_Swipe) // Swiping Block
 {
     switch (Direction_of_Swipe)
     {
@@ -232,7 +232,6 @@ void Swipe(Game_Data &New_Game, char Direction_of_Swipe)
 
     case 'd': // Right
     {
-        
         for (int y = 0; y < New_Game.Board_Size; y++)
         {
             
@@ -283,18 +282,23 @@ void Swipe(Game_Data &New_Game, char Direction_of_Swipe)
         }
         break;
     }
+
+    case 'q':
+    {
+        return;
     }
+    }
+    return;
 }
 
-void New_Game_Session(Game_Data &New_Game, int ymax, int xmax)
+void New_Game_Session(Game_Data &New_Game, int ymax, int xmax) // Starting a new game
 {
     New_Game.Board_Size = game_Size(ymax, xmax);
-
     Initalizing_Game(New_Game);
     Adding_Block(New_Game);
 }
 
-void Save_Current_Game(player_Information &Current_Player, Game_Data &Current_Game)
+void Save_Current_Game(player_Information &Current_Player, Game_Data &Current_Game) // Save the current game if it is new, Update if it is a old game
 {   
     std::vector<player_Information>::iterator head = std::find_if(Player_Data_Base.begin(), Player_Data_Base.end(), [=](player_Information Players){return Players.player_ID == Current_Player.player_ID;});
 
@@ -307,11 +311,12 @@ void Save_Current_Game(player_Information &Current_Player, Game_Data &Current_Ga
     head->Game_Storage.push_back(Current_Game);
 }
 
-void Game(player_Information &player, Game_Data &New_Game, int ymax, int xmax)
+void Game(player_Information &player, Game_Data &New_Game, int ymax, int xmax)  // Game Session
 {
-    while (Check_Game_Status(New_Game))
+    char direction;
+    while (Check_Game_Status(New_Game) && direction != 'q')
     {
-        char direction = Game_Board(New_Game, ymax, xmax);
+        direction = Game_Board(New_Game, ymax, xmax);
         Swipe(New_Game, direction);
         Adding_Block(New_Game);
     }
